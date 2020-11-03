@@ -24,6 +24,8 @@ class Posts {
         this.asosiyFaoliyat,
         this.rating});
 
+
+
   Posts.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
