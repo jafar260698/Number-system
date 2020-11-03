@@ -7,5 +7,4 @@ class NotesRepository {
   ApiProvider apiProvider=ApiProvider();
 
   Future<Posts> getAllPost()=>apiProvider.getAllPost();
-
 }
