@@ -53,7 +53,8 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   TextEditingController edittext3 = new TextEditingController();
   TextEditingController titleController = TextEditingController();
 
-  String _textString="Javob : ";
+  String _textString="Javob:  ";
+  String txt="";
 
   bool checkTextFieldEmptyOrNot() {
     String text1, text2,text3;
@@ -70,6 +71,20 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     if(text3==''){
       return false;
     }
+    return true;
+  }
+
+  bool checkTextFieldLimitation(){
+    String txt1, txt2;
+    txt1 = edittext2.text;
+    txt2 = edittext3.text;
+    if(int.parse(txt1.toString())>=37){
+      return false;
+    }
+    if(int.parse(txt2.toString())>=37){
+      return false;
+    }
+
     return true;
   }
 
@@ -94,6 +109,20 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
         setState(() {});
       });
 
+    edittext2.addListener(() {
+      if(int.parse(edittext2.text)>=35){
+        print("value: ${edittext2.text}");
+      }else{
+        print("value: TT");
+      }
+
+       //use setState to rebuild the widget
+       setState(() {
+
+       });
+
+     });
+
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
         _controller.forward();
@@ -107,6 +136,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   void dispose() {
     _controller.dispose();
     _focusNode.dispose();
+    edittext2.dispose();
     super.dispose();
   }
 
@@ -159,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                                 new Padding(padding: EdgeInsets.only(top: 28.0)),
                                 new TextFormField(
                                   controller: edittext2,
-                                  maxLength: 4,
+                                  maxLength: 2,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -188,7 +218,10 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                                 new Padding(padding: EdgeInsets.only(top: 28.0)),
                                 new TextFormField(
                                   controller: edittext3,
-                                  maxLength: 4,
+                                  onChanged: (text){
+                                    print("First text field: $text");
+                                  },
+                                  maxLength: 2,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -225,59 +258,63 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                                                     ));
                                                   }else{
                                                    try{
-                                                     int w=0;
-                                                     input = edittext1.text.toString();
-                                                     output = "";
-                                                     if(input.isEmpty||edittext2.text.toString().isEmpty||
-                                                         edittext3.text.toString().isEmpty){
-                                                        inp=0;
-                                                        outp=0;
-                                                //  Answer.setText("Kiritilmagan!");
+                                                     if(checkTextFieldLimitation()){
+                                                       int w=0;
+                                                       input = edittext1.text.toString();
+                                                       output = "";
+                                                       if(input.isEmpty||edittext2.text.toString().isEmpty||
+                                                           edittext3.text.toString().isEmpty){
+                                                         inp=0;
+                                                         outp=0;
+                                                         //  Answer.setText("Kiritilmagan!");
 
-                                                      }else {
-                                                        inp = int.parse(edittext2.text.toString());
-                                                        outp = int.parse(edittext3.text.toString()).toInt();
+                                                       }else {
+                                                         inp = int.parse(edittext2.text.toString());
+                                                         outp = int.parse(edittext3.text.toString()).toInt();
 
-                                                        input = input.toUpperCase();
-                                                        edittext1.text=input;
-                                                        for (int i = 0; i < input.length; i++) {
-                                                          if ((input[i].codeUnitAt(0) < 48 && input[i].codeUnitAt(0) >57) || (input[i].codeUnitAt(0) < 65 && input[i].codeUnitAt(0) >90)) {
-                                                            w = 1;
-                                                            //Answer.setText("Belgilar!!!");
-                                                            Scaffold.of(context).showSnackBar(SnackBar(
+                                                         input = input.toUpperCase();
+                                                         edittext1.text=input;
+                                                         for (int i = 0; i < input.length; i++) {
+                                                           if ((input[i].codeUnitAt(0) < 48 && input[i].codeUnitAt(0) >57) || (input[i].codeUnitAt(0) < 65 && input[i].codeUnitAt(0) >90)) {
+                                                             w = 1;
+                                                             Scaffold.of(context).showSnackBar(SnackBar(
                                                                content: Text("Belgilar noto'gri!!!"),));
-                                                              break;
-                                                          }
-                                                        }
-
-                                                        if (w == 0)
-                                                        for (int i = 0; i < input.length; i++) {
-                                                            if (alphabet.indexOf(input[i]) >= inp) {
-                                                              w = 1;
-                                                              setText("Xato !!!");
+                                                             break;
+                                                           }
+                                                         }
+                                                         if (w == 0)
+                                                           for (int i = 0; i < input.length; i++) {
+                                                             if (alphabet.indexOf(input[i]) >= inp) {
+                                                               w = 1;
+                                                               setText("Xato !!!");
                                                                break;
-                                                            }else{
-                                                              w = 0;
-                                                            }
-                                                        }
-                                                        if (w == 0) {
-                                                          for (int i = 0; i < input.length; i++) {
-                                                            for (int j = 0; j < alphabet.length; j++) {
-                                                              if (input[i] == alphabet[j])
-                                                              anyNumber += j * pow(inp, input.length - i - 1);
-                                                            }
-                                                          }
-                                                          while (anyNumber >= 1) {
-                                                            output = alphabet[anyNumber.toInt() % outp] + output;
-                                                            anyNumber=anyNumber/(outp);
-                                                          }
-                                                         // Scaffold.of(context).showSnackBar(SnackBar(
-                                                         //     content: Text("Javob:\n" + output)));
-                                                          setText("Javob : " + output);
-                                                        }
+                                                             }else{
+                                                               w = 0;
+                                                             }
+                                                           }
+                                                         if (w == 0) {
+                                                           for (int i = 0; i < input.length; i++) {
+                                                             for (int j = 0; j < alphabet.length; j++) {
+                                                               if (input[i] == alphabet[j])
+                                                                 anyNumber += j * pow(inp, input.length - i - 1);
+                                                             }
+                                                           }
+                                                           while (anyNumber >= 1) {
+                                                             output = alphabet[anyNumber.toInt() % outp] + output;
+                                                             anyNumber=anyNumber/(outp);
+                                                           }
+                                                           // Scaffold.of(context).showSnackBar(SnackBar(
+                                                           //     content: Text("Javob:\n" + output)));
+                                                           setText("Javob: " + output);
+                                                           txt=output;
+                                                         }
 
-                                                        }
+                                                       }
 
+                                                     }else{
+                                                       Scaffold.of(context).showSnackBar(SnackBar(
+                                                         content: Text("Eng katta sanoq tizimi 36 hisoblanadi, siz bu chegaradan o'tdindiz !"),));
+                                                     }
                                                    }catch(e){
                                                      Scaffold.of(context).showSnackBar(SnackBar(
                                                          content: Text("Xatolik sodir bo'ldi "+e.toString()),));
@@ -315,19 +352,28 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                                                   ),
                                                 ),
                                       ),
-                                    color: Colors.transparent,
                                   ),
                                 ),
                                 new Padding(padding: EdgeInsets.only(top: 28.0),),
-                                new Container(
-                                  child: new Text(
-                                    _textString,
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 25.0,
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.normal
-                                    ),
+                                Material(
+                                  child: new InkWell(
+                                        onLongPress: (){
+                                          Scaffold.of(context).showSnackBar(SnackBar(
+                                            content: Text("Ko'chirildi !"),
+                                          ));
+                                          Clipboard.setData(ClipboardData(text: txt));
+                                        },
+                                        child: new Container(
+                                           child: new Text(
+                                             _textString,
+                                               style: TextStyle(
+                                                  color: Colors.blue,
+                                                  fontSize: 25.0,
+                                                  fontFamily: "Poppins",
+                                                  fontWeight: FontWeight.normal
+                                              ),
+                                        ),
+                                      ),
                                   ),
                                 ),
                                 //bottomButtons()
@@ -335,7 +381,35 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                           )
                       )
                 ),
-     );
+      );
+  }
+
+  Padding emailView() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: Icon(
+              Icons.alternate_email,
+            ),
+          ),
+          Expanded(
+            child: TextField(
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintStyle: const TextStyle(color: Colors.grey),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white.withOpacity(0.5)),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
