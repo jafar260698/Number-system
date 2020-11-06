@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,8 +9,9 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   build(context) {
-    //FlutterStatusbarcolor.setStatusBarColor(Colors.white);
-    //  flutter_statusbarcolor: ^0.2.3
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.blue, //or set color with: Color(0xFF0000FF)
+    ));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'My Http App',
@@ -20,17 +20,24 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white
       ),
       home: Scaffold(
-        body: SingleChildScrollView(
-          child:  MyHomePage(),
+        backgroundColor: Colors.white,
+        body: Center(
+          child: SingleChildScrollView(
+            child:  MyHomePage(),
+          ),
         ),
       )
-
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+  final Function() onPressed;
+  final String tooltip;
+  final IconData icon;
+
+
+  MyHomePage({this.onPressed, this.tooltip, this.icon});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -106,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Material(
-       child: new Container (
+          child: new Container (
                     padding: const EdgeInsets.all(30.0),
                     color: Colors.white,
                       child: new Center(
@@ -123,11 +130,12 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                                 new Padding(padding: EdgeInsets.only(top: 40.0)),
                                 new TextFormField(
                                   controller: edittext1,
-                                  keyboardType: TextInputType.number,
                                   maxLength: 25,
+                                  keyboardType: TextInputType.text,
                                   inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                    FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]")),
                                   ],
+                                  textCapitalization: TextCapitalization.characters,
                                   decoration: new InputDecoration(
                                     labelText: "Sonni kiriting",
                                     fillColor: Colors.white,
@@ -207,104 +215,107 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                                   ),
                                 ),
                                 new Padding(padding: EdgeInsets.only(top: 28.0)),
-                                new Material(
-                                  child: new InkWell(
-                                            onTap: () {
-                                              if(!checkTextFieldEmptyOrNot()){
-                                                Scaffold.of(context).showSnackBar(SnackBar(
-                                                  content: Text("Raqamlarni to'liq kiriting !!!"),
-                                                ));
-                                              }else{
-                                               try{
-                                                 int w=0;
-                                                 input = edittext1.text.toString();
-                                                 output = "";
-                                                 if(input.isEmpty||edittext2.text.toString().isEmpty||
-                                                     edittext3.text.toString().isEmpty){
-                                                    inp=0;
-                                                    outp=0;
-                                            //  Answer.setText("Kiritilmagan!");
+                                new Container(
+                                  child: new Material(
+                                    child: new InkWell(
+                                                onTap: () {
+                                                  if(!checkTextFieldEmptyOrNot()){
+                                                    Scaffold.of(context).showSnackBar(SnackBar(
+                                                      content: Text("Raqamlarni to'liq kiriting !!!"),
+                                                    ));
+                                                  }else{
+                                                   try{
+                                                     int w=0;
+                                                     input = edittext1.text.toString();
+                                                     output = "";
+                                                     if(input.isEmpty||edittext2.text.toString().isEmpty||
+                                                         edittext3.text.toString().isEmpty){
+                                                        inp=0;
+                                                        outp=0;
+                                                //  Answer.setText("Kiritilmagan!");
 
-                                                  }else {
-                                                    inp = int.parse(edittext2.text.toString());
-                                                    outp = int.parse(edittext3.text.toString()).toInt();
+                                                      }else {
+                                                        inp = int.parse(edittext2.text.toString());
+                                                        outp = int.parse(edittext3.text.toString()).toInt();
 
-                                                    input = input.toUpperCase();
-                                                    edittext1.text=input;
-                                                    for (int i = 0; i < input.length; i++) {
-                                                      if ((input[i].codeUnitAt(0) < 48 && input[i].codeUnitAt(0) >57) || (input[i].codeUnitAt(0) < 65 && input[i].codeUnitAt(0) >90)) {
-                                                        w = 1;
-                                                        //Answer.setText("Belgilar!!!");
-                                                        Scaffold.of(context).showSnackBar(SnackBar(
-                                                           content: Text("Belgilar noto'gri!!!"),));
-                                                          break;
-                                                      }
-                                                    }
-
-                                                    if (w == 0)
-                                                    for (int i = 0; i < input.length; i++) {
-                                                        if (alphabet.indexOf(input[i]) >= inp) {
-                                                          w = 1;
-                                                          setText("Xato !!!");
-                                                           break;
-                                                        }else{
-                                                          w = 0;
+                                                        input = input.toUpperCase();
+                                                        edittext1.text=input;
+                                                        for (int i = 0; i < input.length; i++) {
+                                                          if ((input[i].codeUnitAt(0) < 48 && input[i].codeUnitAt(0) >57) || (input[i].codeUnitAt(0) < 65 && input[i].codeUnitAt(0) >90)) {
+                                                            w = 1;
+                                                            //Answer.setText("Belgilar!!!");
+                                                            Scaffold.of(context).showSnackBar(SnackBar(
+                                                               content: Text("Belgilar noto'gri!!!"),));
+                                                              break;
+                                                          }
                                                         }
-                                                    }
-                                                    if (w == 0) {
-                                                      for (int i = 0; i < input.length; i++) {
-                                                        for (int j = 0; j < alphabet.length; j++) {
-                                                          if (input[i] == alphabet[j])
-                                                          anyNumber += j * pow(inp, input.length - i - 1);
+
+                                                        if (w == 0)
+                                                        for (int i = 0; i < input.length; i++) {
+                                                            if (alphabet.indexOf(input[i]) >= inp) {
+                                                              w = 1;
+                                                              setText("Xato !!!");
+                                                               break;
+                                                            }else{
+                                                              w = 0;
+                                                            }
                                                         }
-                                                      }
-                                                      while (anyNumber >= 1) {
-                                                        output = alphabet[anyNumber.toInt() % outp] + output;
-                                                        anyNumber=anyNumber/(outp);
-                                                      }
-                                                     // Scaffold.of(context).showSnackBar(SnackBar(
-                                                     //     content: Text("Javob:\n" + output)));
-                                                      setText("Javob : " + output);
-                                                    }
+                                                        if (w == 0) {
+                                                          for (int i = 0; i < input.length; i++) {
+                                                            for (int j = 0; j < alphabet.length; j++) {
+                                                              if (input[i] == alphabet[j])
+                                                              anyNumber += j * pow(inp, input.length - i - 1);
+                                                            }
+                                                          }
+                                                          while (anyNumber >= 1) {
+                                                            output = alphabet[anyNumber.toInt() % outp] + output;
+                                                            anyNumber=anyNumber/(outp);
+                                                          }
+                                                         // Scaffold.of(context).showSnackBar(SnackBar(
+                                                         //     content: Text("Javob:\n" + output)));
+                                                          setText("Javob : " + output);
+                                                        }
 
-                                                    }
+                                                        }
 
-                                               }catch(e){
-                                                 Scaffold.of(context).showSnackBar(SnackBar(
-                                                     content: Text("Xatolik sodir bo'ldi "+e.toString()),));
-                                               }
+                                                   }catch(e){
+                                                     Scaffold.of(context).showSnackBar(SnackBar(
+                                                         content: Text("Xatolik sodir bo'ldi "+e.toString()),));
+                                                   }
 
-                                              }
-                                            },
-                                            child: Container(
-                                              height: 57.0,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color: Colors.blue,
-                                                  style: BorderStyle.solid,
-                                                  width: 0.2,
-                                                ),
-                                                color: Colors.blue,
-                                                borderRadius: BorderRadius.circular(30.0),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  Center(
-                                                    child: Text(
-                                                      "Hisoblash",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontFamily: 'Montserrat',
-                                                        fontSize: 17,
-                                                        fontWeight: FontWeight.w600,
-                                                        letterSpacing: 1,
-                                                      ),
+                                                  }
+                                                },
+                                                child: Container(
+                                                  height: 57.0,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      color: Colors.blue,
+                                                      style: BorderStyle.solid,
+                                                      width: 0.2,
                                                     ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
+                                                    color: Colors.blue,
+                                                    borderRadius: BorderRadius.circular(30.0),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: <Widget>[
+                                                      Center(
+                                                        child: Text(
+                                                          "Hisoblash",
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontFamily: 'Montserrat',
+                                                            fontSize: 17,
+                                                            fontWeight: FontWeight.w600,
+                                                            letterSpacing: 1,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                      ),
+                                    color: Colors.transparent,
                                   ),
                                 ),
                                 new Padding(padding: EdgeInsets.only(top: 28.0),),
@@ -326,7 +337,6 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                 ),
      );
   }
-
 }
 
 
