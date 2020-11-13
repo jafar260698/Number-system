@@ -87,6 +87,19 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
 
     return true;
   }
+  bool checkTextFieldLessLimitation(){
+    String txt1, txt2;
+    txt1 = edittext2.text;
+    txt2 = edittext3.text;
+    if(int.parse(txt1.toString())<=1){
+      return false;
+    }
+    if(int.parse(txt2.toString())<=1){
+      return false;
+    }
+
+    return true;
+  }
 
   void setText(String data){
     setState(() {
@@ -259,58 +272,117 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                                                   }else{
                                                    try{
                                                      if(checkTextFieldLimitation()){
-                                                       int w=0;
-                                                       input = edittext1.text.toString();
-                                                       output = "";
-                                                       if(input.isEmpty||edittext2.text.toString().isEmpty||
-                                                           edittext3.text.toString().isEmpty){
-                                                         inp=0;
-                                                         outp=0;
-                                                         //  Answer.setText("Kiritilmagan!");
+                                                       if(checkTextFieldLessLimitation()) {
+                                                         int w = 0;
+                                                         input = edittext1.text
+                                                             .toString();
+                                                         output = "";
+                                                         if (input.isEmpty ||
+                                                             edittext2.text
+                                                                 .toString()
+                                                                 .isEmpty ||
+                                                             edittext3.text
+                                                                 .toString()
+                                                                 .isEmpty) {
+                                                           inp = 0;
+                                                           outp = 0;
+                                                           //  Answer.setText("Kiritilmagan!");
 
-                                                       }else {
-                                                         inp = int.parse(edittext2.text.toString());
-                                                         outp = int.parse(edittext3.text.toString()).toInt();
+                                                         } else {
+                                                           inp = int.parse(
+                                                               edittext2.text
+                                                                   .toString());
+                                                           outp = int.parse(
+                                                               edittext3.text
+                                                                   .toString())
+                                                               .toInt();
 
-                                                         input = input.toUpperCase();
-                                                         edittext1.text=input;
-                                                         for (int i = 0; i < input.length; i++) {
-                                                           if ((input[i].codeUnitAt(0) < 48 && input[i].codeUnitAt(0) >57) || (input[i].codeUnitAt(0) < 65 && input[i].codeUnitAt(0) >90)) {
-                                                             w = 1;
-                                                             Scaffold.of(context).showSnackBar(SnackBar(
-                                                               content: Text("Belgilar noto'gri!!!"),));
-                                                             break;
-                                                           }
-                                                         }
-                                                         if (w == 0)
-                                                           for (int i = 0; i < input.length; i++) {
-                                                             if (alphabet.indexOf(input[i]) >= inp) {
+                                                           input = input
+                                                               .toUpperCase();
+                                                           edittext1.text =
+                                                               input;
+                                                           for (int i = 0; i <
+                                                               input
+                                                                   .length; i++) {
+                                                             if ((input[i]
+                                                                 .codeUnitAt(
+                                                                 0) < 48 &&
+                                                                 input[i]
+                                                                     .codeUnitAt(
+                                                                     0) > 57) ||
+                                                                 (input[i]
+                                                                     .codeUnitAt(
+                                                                     0) < 65 &&
+                                                                     input[i]
+                                                                         .codeUnitAt(
+                                                                         0) >
+                                                                         90)) {
                                                                w = 1;
-                                                               setText("Xato !!!");
+                                                               Scaffold.of(
+                                                                   context)
+                                                                   .showSnackBar(
+                                                                   SnackBar(
+                                                                     content: Text(
+                                                                         "Belgilar noto'gri!!!"),));
                                                                break;
-                                                             }else{
-                                                               w = 0;
                                                              }
                                                            }
-                                                         if (w == 0) {
-                                                           for (int i = 0; i < input.length; i++) {
-                                                             for (int j = 0; j < alphabet.length; j++) {
-                                                               if (input[i] == alphabet[j])
-                                                                 anyNumber += j * pow(inp, input.length - i - 1);
+                                                           if (w == 0)
+                                                             for (int i = 0; i <
+                                                                 input
+                                                                     .length; i++) {
+                                                               if (alphabet
+                                                                   .indexOf(
+                                                                   input[i]) >=
+                                                                   inp) {
+                                                                 w = 1;
+                                                                 setText(
+                                                                     "Xato !!!");
+                                                                 break;
+                                                               } else {
+                                                                 w = 0;
+                                                               }
                                                              }
+                                                           if (w == 0) {
+                                                             for (int i = 0; i <
+                                                                 input
+                                                                     .length; i++) {
+                                                               for (int j = 0; j <
+                                                                   alphabet
+                                                                       .length; j++) {
+                                                                 if (input[i] ==
+                                                                     alphabet[j])
+                                                                   anyNumber +=
+                                                                       j * pow(
+                                                                           inp,
+                                                                           input
+                                                                               .length -
+                                                                               i -
+                                                                               1);
+                                                               }
+                                                             }
+                                                             while (anyNumber >=
+                                                                 1) {
+                                                               output =
+                                                                   alphabet[anyNumber
+                                                                       .toInt() %
+                                                                       outp] +
+                                                                       output;
+                                                               anyNumber =
+                                                                   anyNumber /
+                                                                       (outp);
+                                                             }
+                                                             // Scaffold.of(context).showSnackBar(SnackBar(
+                                                             //     content: Text("Javob:\n" + output)));
+                                                             setText("Javob: " +
+                                                                 output);
+                                                             txt = output;
                                                            }
-                                                           while (anyNumber >= 1) {
-                                                             output = alphabet[anyNumber.toInt() % outp] + output;
-                                                             anyNumber=anyNumber/(outp);
-                                                           }
-                                                           // Scaffold.of(context).showSnackBar(SnackBar(
-                                                           //     content: Text("Javob:\n" + output)));
-                                                           setText("Javob: " + output);
-                                                           txt=output;
                                                          }
-
+                                                       }else{
+                                                         Scaffold.of(context).showSnackBar(SnackBar(
+                                                           content: Text("Eng kichik sanoq tizimi 2 !!!"),));
                                                        }
-
                                                      }else{
                                                        Scaffold.of(context).showSnackBar(SnackBar(
                                                          content: Text("Eng katta sanoq tizimi 36 hisoblanadi, siz bu chegaradan o'tdindiz !"),));
