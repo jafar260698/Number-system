@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:math' as math;
+
 
 void main() => runApp(MyApp());
 
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     ));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'My Http App',
+      title: 'Sanoq sistemasi',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         backgroundColor: Colors.white
@@ -114,7 +114,6 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     _animation = Tween(begin: 300.0, end: 50.0).animate(_controller)
