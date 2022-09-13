@@ -1,4 +1,3 @@
-# block_pattern
 
 A new Flutter application.
 
