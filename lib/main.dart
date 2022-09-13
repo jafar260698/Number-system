@@ -1,8 +1,7 @@
+import 'dart:async';
 import 'dart:math';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 
 void main() => runApp(MyApp());
 
@@ -35,7 +34,6 @@ class MyHomePage extends StatefulWidget {
   final Function() onPressed;
   final String tooltip;
   final IconData icon;
-
 
   MyHomePage({this.onPressed, this.tooltip, this.icon});
 
@@ -371,8 +369,6 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                                                                    anyNumber /
                                                                        (outp);
                                                              }
-                                                             // Scaffold.of(context).showSnackBar(SnackBar(
-                                                             //     content: Text("Javob:\n" + output)));
                                                              setText("Javob: " +
                                                                  output);
                                                              txt = output;
@@ -447,7 +443,6 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                                       ),
                                   ),
                                 ),
-                                //bottomButtons()
                               ]
                           )
                       )
